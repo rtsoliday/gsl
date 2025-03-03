@@ -690,7 +690,7 @@ $(OUTPUT_DIR):
 	@mkdir -p $(OUTPUT_DIR)
 
 # **Default Target**
-all: $(OUTPUT_DIR) staticlibs
+all: staticlibs
 
 # **Compilation Rule**
 # Compile .c files to .obj object files using the MSVC compiler.
@@ -699,7 +699,7 @@ all: $(OUTPUT_DIR) staticlibs
 	$(CC) $(CFLAGS) -I. -c $< -Fo$@
 
 # **Linking Rules**
-staticlibs: $(OUTPUT_DIR)/$(LIBNAME_CBLAS).lib $(OUTPUT_DIR)/$(LIBNAME_GSL).lib
+staticlibs: $(OUTPUT_DIR) $(OUTPUT_DIR)/$(LIBNAME_CBLAS).lib $(OUTPUT_DIR)/$(LIBNAME_GSL).lib
 
 # Archive the CBLAS static library
 $(OUTPUT_DIR)/$(LIBNAME_CBLAS).lib: $(CBLAS_OBJS)
@@ -718,3 +718,5 @@ clean:
 	@rm -f $(OUTPUT_DIR)/$(LIBNAME_CBLAS).dll $(OUTPUT_DIR)/$(LIBNAME_CBLAS).lib
 	@rm -f gsl/*.h config.h gsl_version.h
 	@rm -rf $(OUTPUT_DIR)
+
+.NOTPARALLEL: $(OUTPUT_DIR)
